@@ -7,6 +7,10 @@ import (
 	"testing"
 )
 
+// Benchmark classical memory layout vs data-oriented layout.
+// The prefix BenchmarkDO is for the Data-Oriented versions.
+
+// Prevent some potential unwanted compiler optimizations
 var Sink int
 
 func BenchmarkAntSearchByField1(b *testing.B) {
@@ -160,6 +164,8 @@ func generateDataOrientedColony(r *rand.Rand, size int) DataOrientedAntColony {
 func TestAntStructSize(t *testing.T) {
 	// For a 64-bit platform:
 	// 4*8 + 4*16 == 96 bytes
+	// The string contents are not accounted for inside
+	// the Ant struct, only the string headers.
 	var i int
 	var s string
 	intSize := reflect.TypeOf(i).Size()
