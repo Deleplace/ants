@@ -14,7 +14,10 @@ func BenchmarkAntSearchByField1(b *testing.B) {
 	ants := generateColony(r, 1_000_000)
 	needle := 42
 	b.ResetTimer()
+	Sink = 0
 	for i := 0; i < b.N; i++ {
+		// Traverse the full slice, assigning to Sink
+		// the last matching index (if found).
 		for _, ant := range ants {
 			if ant.Field1 == needle {
 				Sink = i
@@ -28,7 +31,10 @@ func BenchmarkDOAntSearchByField1(b *testing.B) {
 	ants := generateDataOrientedColony(r, 1_000_000)
 	needle := 42
 	b.ResetTimer()
+	Sink = 0
 	for i := 0; i < b.N; i++ {
+		// Traverse the full slice, assigning to Sink
+		// the last matching index (if found).
 		for i, f1 := range ants.Field1 {
 			if f1 == needle {
 				Sink = i
@@ -42,7 +48,10 @@ func BenchmarkAntSearchByField2(b *testing.B) {
 	ants := generateColony(r, 1_000_000)
 	needle := "field2-42"
 	b.ResetTimer()
+	Sink = 0
 	for i := 0; i < b.N; i++ {
+		// Traverse the full slice, assigning to Sink
+		// the last matching index (if found).
 		for _, ant := range ants {
 			if ant.Field2 == needle {
 				Sink = i
@@ -56,7 +65,10 @@ func BenchmarkDOAntSearchByField2(b *testing.B) {
 	ants := generateDataOrientedColony(r, 1_000_000)
 	needle := "field2-42"
 	b.ResetTimer()
+	Sink = 0
 	for i := 0; i < b.N; i++ {
+		// Traverse the full slice, assigning to Sink
+		// the last matching index (if found).
 		for i, f2 := range ants.Field2 {
 			if f2 == needle {
 				Sink = i
@@ -71,6 +83,8 @@ func BenchmarkAntInspect(b *testing.B) {
 	b.ResetTimer()
 	Sink = 0
 	for i := 0; i < b.N; i++ {
+		// Traverse the full slice, incrementing Sink
+		// when some condition is met.
 		for _, ant := range ants {
 			if ant.Field1 < ant.Field3 {
 				Sink++
