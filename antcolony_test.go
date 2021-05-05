@@ -30,6 +30,24 @@ func BenchmarkAntSearchByField1(b *testing.B) {
 	}
 }
 
+func BenchmarkAntSearchByField1EgonElbre(b *testing.B) {
+	r := rand.New(rand.NewSource(42))
+	ants := generateColony(r, 1_000_000)
+	needle := 42
+	b.ResetTimer()
+	Sink = 0
+	for i := 0; i < b.N; i++ {
+		// Traverse the full slice, assigning to Sink
+		// the last matching index (if found).
+		for i := range ants {
+			ant := &ants[i]
+			if ant.Field1 == needle {
+				Sink = i
+			}
+		}
+	}
+}
+
 func BenchmarkDOAntSearchByField1(b *testing.B) {
 	r := rand.New(rand.NewSource(42))
 	ants := generateDataOrientedColony(r, 1_000_000)
@@ -64,6 +82,24 @@ func BenchmarkAntSearchByField2(b *testing.B) {
 	}
 }
 
+func BenchmarkAntSearchByField2EgonElbre(b *testing.B) {
+	r := rand.New(rand.NewSource(42))
+	ants := generateColony(r, 1_000_000)
+	needle := "field2-42"
+	b.ResetTimer()
+	Sink = 0
+	for i := 0; i < b.N; i++ {
+		// Traverse the full slice, assigning to Sink
+		// the last matching index (if found).
+		for i := range ants {
+			ant := &ants[i]
+			if ant.Field2 == needle {
+				Sink = i
+			}
+		}
+	}
+}
+
 func BenchmarkDOAntSearchByField2(b *testing.B) {
 	r := rand.New(rand.NewSource(42))
 	ants := generateDataOrientedColony(r, 1_000_000)
@@ -90,6 +126,26 @@ func BenchmarkAntInspect(b *testing.B) {
 		// Traverse the full slice, incrementing Sink
 		// when some condition is met.
 		for _, ant := range ants {
+			if ant.Field1 < ant.Field3 {
+				Sink++
+			}
+			if ant.Field5 < ant.Field7 {
+				Sink++
+			}
+		}
+	}
+	// b.Logf("BenchmarkAntInspect\t%d => %d", b.N, Sink)
+}
+func BenchmarkAntInspectEgonElbre(b *testing.B) {
+	r := rand.New(rand.NewSource(42))
+	ants := generateColony(r, 1_000_000)
+	b.ResetTimer()
+	Sink = 0
+	for i := 0; i < b.N; i++ {
+		// Traverse the full slice, incrementing Sink
+		// when some condition is met.
+		for i := range ants {
+			ant := &ants[i]
 			if ant.Field1 < ant.Field3 {
 				Sink++
 			}
